@@ -4,7 +4,8 @@ import {connect} from "react-redux";
 import {markResolved, removeTodo, markUnresolved, switchModal} from "../actions/todo.actions";
 
 @connect(store => ({
-        modalVisible: store.todos.modalVisible
+        modalVisible: store.todos.modalVisible,
+        todoModal: store.todos.todoModal,
     }),
     dispatch => ({
         markResolved: (id) => dispatch(markResolved(id)),
@@ -15,7 +16,9 @@ import {markResolved, removeTodo, markUnresolved, switchModal} from "../actions/
 )
 export default class TodoModal extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        // console.log(props.todoModal.completed,'props todo');
+        // console.log(props.todoModal.text,'props todo text');
     }
 
     render() {
@@ -28,7 +31,7 @@ export default class TodoModal extends Component {
                 >
                     <View style={styles.container}>
                         <TouchableHighlight
-                            style={this.props.todo.completed ? styles.noHlight : ''}
+                            style={this.props.todoModal.completed ? styles.noHlight : ''}
                             onPress={() => {
                                 this.handleMarkResolved()
                             }}>
@@ -37,7 +40,7 @@ export default class TodoModal extends Component {
 
                         <TouchableHighlight onPress={() => {
                             this.handleMarkUnResolved()
-                        }} style={!this.props.todo.completed ? styles.noHlight : ''} >
+                        }} style={!this.props.todoModal.completed ? styles.noHlight : ''} >
 
                             <Text style={styles.highlight}>Unresolved</Text>
                         </TouchableHighlight>
@@ -59,17 +62,17 @@ export default class TodoModal extends Component {
     }
 
     handleMarkResolved = () => {
-        this.props.markResolved(this.props.todo.id);
+        this.props.markResolved(this.props.todoModal.id);
         this.props.switchModal();
     };
 
     handleMarkUnResolved = () => {
-        this.props.markUnResolved(this.props.todo.id);
+        this.props.markUnResolved(this.props.todoModal.id);
         this.props.switchModal();
     };
 
     handleRemoveTodo = () => {
-        this.props.removeTodo(this.props.todo.id);
+        this.props.removeTodo(this.props.todoModal.id);
         this.props.switchModal();
     }
 

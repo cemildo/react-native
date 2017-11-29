@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {FlatList, Text, StyleSheet, View, Button, ScrollView, Dimensions} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import {connect} from 'react-redux';
-import {addTodo, removeTodo, switchModal} from "../actions/todo.actions";
+import {addTodo, passTodoID, passTodoModal, switchModal} from "../actions/todo.actions";
 import Header from "./header";
 import TodoModal from "./todo.modal";
 
@@ -11,7 +11,8 @@ import TodoModal from "./todo.modal";
     }),
     dispatch => ({
         hadnleAddTodoClick: (todo) => dispatch(addTodo(todo)),
-        switchModal: () => dispatch(switchModal())
+        switchModal: () => dispatch(switchModal()),
+        passTodoModal: (todo) => dispatch(passTodoModal(todo)),
     })
 )
 export default class TodoList extends Component {
@@ -19,7 +20,6 @@ export default class TodoList extends Component {
     _keyExtractor = (item, index) => item.id;
     state = {
         i: 1,
-        todo: {}
     };
 
     render() {
@@ -31,19 +31,20 @@ export default class TodoList extends Component {
                               keyExtractor={this._keyExtractor}
                               renderItem={({item, index}) => <Text key={index} style={styles.item}
                                                                    onPress={(item) => this.showModal(item)}>{item.text}</Text>}/>
-                    <TodoModal todo={this.state.todo}/>
                 </View>
                 <View style = {styles.btnAdd}>
                     <Button onPress={() => this.handleAddTodo()} title = 'add todo' style={styles.btn}/>
                 </View>
+                {/*<TodoModal/>*/}
             </View>
 
         )
     }
 
-    showModal(todo) {
-        this.setState({todo: todo});
-        this.props.switchModal();
+    showModal(item) {
+        console.log( item,'showing modal...');
+        // this.props.passTodoModal(todo);
+        // this.props.switchModal();
     }
 
     handleAddTodo = () => {

@@ -1,9 +1,16 @@
-import {ADD_TODO, MARK_RESOLVED, MARK_UNRESOLVED, REMOVE_TODO, SWITCH_MODAL} from "../constants/todo.constants";
+import {
+    ADD_TODO, MARK_RESOLVED, MARK_UNRESOLVED, PASS_TODO, REMOVE_TODO,
+    SWITCH_MODAL
+} from "../constants/todo.constants";
 
 const INIT_STATE = {
     todos: [],
     count: 0,
-    modalVisible:false
+    modalVisible:false,
+    todoModal: {
+        text : 'Inccorect text',
+        completed: false
+    }
 };
 
 export const todos = (state = INIT_STATE, action) => {
@@ -33,6 +40,10 @@ export const todos = (state = INIT_STATE, action) => {
 
         case SWITCH_MODAL: {
             return {...state, modalVisible: !state.modalVisible}
+        }
+
+        case PASS_TODO: {
+            return {...state, todoModal: action.payload}
         }
 
         default :

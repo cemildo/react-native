@@ -1,4 +1,6 @@
-import {ADD_TODO, REMOVE_TODO, MARK_RESOLVED, MARK_UNRESOLVED, SWITCH_MODAL} from '../constants/todo.constants';
+import {
+    ADD_TODO, REMOVE_TODO, MARK_RESOLVED, MARK_UNRESOLVED, SWITCH_MODAL, PASS_TODO,
+} from '../constants/todo.constants';
 
 export function addTodo(todo) {
     return (dispatch) => {
@@ -40,6 +42,16 @@ export function switchModal() {
     return (dispatch) => {
         dispatch({
             type: SWITCH_MODAL
+        })
+    }
+}
+
+export function passTodoModal(todo) {
+    console.log(todo,'todo action');
+    return (dispatch) => {
+        dispatch({
+            type: PASS_TODO,
+            payload: todo
         })
     }
 }
