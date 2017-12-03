@@ -1,18 +1,16 @@
 import React, {Component} from 'react';
 import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import {connect} from 'react-redux';
-import {addTodo, passTodoID, passTodoModal, switchModal} from "../actions/todo.actions";
-import Header from "./header";
-import TodoModal from "./todo.modal";
+import {addTodo} from "../actions/todo.actions";
+import NavigationBar from "react-native-navbar";
+import SwipeView from "react-native-swipeview/lib/index";
 
 @connect(store => ({
         todos: store.todos.todos,
-        count: store.todos.count
+        count: store.todos.count,
     }),
     dispatch => ({
         hadnleAddTodoClick: (todo) => dispatch(addTodo(todo)),
-        switchModal: () => dispatch(switchModal()),
-        passTodoModal: (todo) => dispatch(passTodoModal(todo)),
     })
 )
 export default class TodoList extends Component {
@@ -22,29 +20,50 @@ export default class TodoList extends Component {
         i: 1,
     };
 
+    scrollView = (item,index) => {
+        return <SwipeView key = {index}
+                          renderVisibleContent={() => <Text style={styles.item}>{item.text}</Text>}
+                          leftOpenValue={Dimensions.get('window').width / 2}
+                          swipeDuration={650}
+                          rightOpenValue={-Dimensions.get('window').width}
+                          swipeToOpenPercent={40}
+                          renderLeftView={() =>
+                              !item.completed ?
+                              <Text style = {styles.rowLeft}>Completed</Text> :
+                                  <Text style = {styles.rowLeft}>Uncompleted</Text>
+                          }
+                          renderRightView={() => <Text style = {styles.rowRight}>Delete</Text>}
+        />
+    };
+
     render() {
+        const rightButtonConfig = {
+            title: 'Count of todos : '+ this.props.count.toString(),
+            disabled: true,
+            tintColor: '#BC5EC5',
+        };
+
+        const titleConfig = {
+            title: 'One more todo app',
+            style: styles.headerTitle
+        };
+
         return (
-            <View>
-                <View>
-                    <Header/>
+            <View style={styles.container}>
+                    <NavigationBar title={titleConfig}
+                                   rightButton={rightButtonConfig}
+                    />
+
                     <FlatList data={this.props.todos}
                               keyExtractor={this._keyExtractor}
-                              renderItem={({item, index}) => <Text key={index} style={styles.item}
-                                                                   onPress={(item) => this.showModal(item)}>{item.text}</Text>}/>
-                </View>
+                              style={styles.flatList}
+                              enableEmptySections={true}
+                              renderItem={({item, index}) => this.scrollView(item,index)}/>
                 <View style = {styles.btnAdd}>
-                    <Button onPress={() => this.handleAddTodo()} title = 'add todo' style={styles.btn}/>
+                    <Button onPress={() => this.handleAddTodo()} title = 'add todo'/>
                 </View>
-                {/*<TodoModal/>*/}
             </View>
-
         )
-    }
-
-    showModal(item) {
-        console.log( item,'showing modal...');
-        // this.props.passTodoModal(todo);
-        // this.props.switchModal();
     }
 
     handleAddTodo = () => {
@@ -61,9 +80,10 @@ export default class TodoList extends Component {
 const styles = StyleSheet.create({
     todoText: {
         flex: 1,
-        padding: 10,
-        fontSize: 18,
-        height: 44
+
+    },
+    headerTitle: {
+        fontSize: 20
     },
     noTODO: {
         flex: 1,
@@ -71,7 +91,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingTop: 22
+        paddingTop: 20
     },
     item: {
         padding: 10,
@@ -88,6 +108,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    btn: {
-    }
+    flatList: {
+        paddingTop: 22
+    },
+    rowLeft: {
+        flex: 1,
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: 'green'
+    },
+    rowRight: {
+        flex: 1,
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: '#FE4D33'
+    },
 });

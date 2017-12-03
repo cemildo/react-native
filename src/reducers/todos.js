@@ -4,9 +4,14 @@ import {
 } from "../constants/todo.constants";
 
 const INIT_STATE = {
-    todos: [],
+    todos: [
+        {
+            id: 0,
+            text: 'hardcode todo id 0',
+            completed: false
+        }
+    ],
     count: 0,
-    modalVisible:false,
     todoModal: {
         text : 'Inccorect text',
         completed: false
@@ -36,14 +41,6 @@ export const todos = (state = INIT_STATE, action) => {
                 ...state, todos: state.todos.map(todo => todo.id === action.payload ?
                     {...todo, completed: false} : todo)
             }
-        }
-
-        case SWITCH_MODAL: {
-            return {...state, modalVisible: !state.modalVisible}
-        }
-
-        case PASS_TODO: {
-            return {...state, todoModal: action.payload}
         }
 
         default :

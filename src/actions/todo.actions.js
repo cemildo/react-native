@@ -37,21 +37,3 @@ export function markUnresolved(id) {
         })
     }
 }
-
-export function switchModal() {
-    return (dispatch) => {
-        dispatch({
-            type: SWITCH_MODAL
-        })
-    }
-}
-
-export function passTodoModal(todo) {
-    console.log(todo,'todo action');
-    return (dispatch) => {
-        dispatch({
-            type: PASS_TODO,
-            payload: todo
-        })
-    }
-}
