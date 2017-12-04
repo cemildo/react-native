@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import {connect} from 'react-redux';
 import {addTodo, markResolved, markUnresolved, removeAll, removeTodo} from "../actions/todo.actions";
 import NavigationBar from "react-native-navbar";
@@ -68,20 +68,18 @@ export default class TodoList extends Component {
                           enableEmptySections={true}
                           renderItem={({item, index}) => this.scrollView(item, index)}/>
                 <View style={styles.btnAdd}>
-                    <TouchableOpacity>
-                        <Icon name='plus' size={22} raised
-                              color={'#384ab4'}
-                              type='font-awesome'
-                              onPress={() => this.handleAddTodo()}/>
-                    </TouchableOpacity>
+                    <Icon name='plus' size={22} raised
+                          color={'#384ab4'}
+                          type='font-awesome'
+                          onPress={() => this.handleAddTodo()}/>
                 </View>
             </View>
         )
     }
 
     rghBtnConf = () => {
-        return <Badge value = {'Todos: ' + this.props.count}
-                      containerStyle = {{backgroundColor: 'violet', marginRight: 5, marginTop : 8}}
+        return <Badge value={'Todos: ' + this.props.count}
+                      containerStyle={{backgroundColor: 'violet', marginRight: 5, marginTop: 8}}
         />
     };
 
