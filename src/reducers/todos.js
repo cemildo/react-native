@@ -1,6 +1,5 @@
 import {
-    ADD_TODO, MARK_RESOLVED, MARK_UNRESOLVED, PASS_TODO, REMOVE_TODO,
-    SWITCH_MODAL
+    ADD_TODO, MARK_RESOLVED, MARK_UNRESOLVED, REMOVE_ALL, REMOVE_TODO,
 } from "../constants/todo.constants";
 
 const INIT_STATE = {
@@ -41,6 +40,10 @@ export const todos = (state = INIT_STATE, action) => {
                 ...state, todos: state.todos.map(todo => todo.id === action.payload ?
                     {...todo, completed: false} : todo)
             }
+        }
+
+        case REMOVE_ALL : {
+            return {...state, todos : [], count : 0}
         }
 
         default :

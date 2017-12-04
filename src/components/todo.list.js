@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {connect} from 'react-redux';
-import {addTodo} from "../actions/todo.actions";
+import {addTodo, markResolved, markUnresolved, removeAll, removeTodo} from "../actions/todo.actions";
 import NavigationBar from "react-native-navbar";
 import SwipeView from "react-native-swipeview/lib/index";
+import {Badge, Icon} from 'react-native-elements';
 
 @connect(store => ({
         todos: store.todos.todos,
@@ -11,6 +12,10 @@ import SwipeView from "react-native-swipeview/lib/index";
     }),
     dispatch => ({
         hadnleAddTodoClick: (todo) => dispatch(addTodo(todo)),
+        markResolved: (id) => dispatch(markResolved(id)),
+        deleteTodo: (id) => dispatch(removeTodo(id)),
+        markUnresolved: (id) => dispatch(markUnresolved(id)),
+        removeAll: () => dispatch(removeAll()),
     })
 )
 export default class TodoList extends Component {
@@ -20,29 +25,31 @@ export default class TodoList extends Component {
         i: 1,
     };
 
-    scrollView = (item,index) => {
-        return <SwipeView key = {index}
-                          renderVisibleContent={() => <Text style={styles.item}>{item.text}</Text>}
+    scrollView = (item, index) => {
+        let isCompleted = item.completed;
+        return <SwipeView key={index}
+                          renderVisibleContent={() => <Text
+                              style={isCompleted ? styles.itemCrossedOut : styles.item}>{item.text}</Text>}
                           leftOpenValue={Dimensions.get('window').width / 2}
                           swipeDuration={650}
                           rightOpenValue={-Dimensions.get('window').width}
                           swipeToOpenPercent={40}
                           renderLeftView={() =>
-                              !item.completed ?
-                              <Text style = {styles.rowLeft}>Completed</Text> :
-                                  <Text style = {styles.rowLeft}>Uncompleted</Text>
+                              !isCompleted ?
+                                  <Text style={styles.rowLeft}>Completed</Text> :
+                                  <Text style={styles.rowLeft}>Uncompleted</Text>
                           }
-                          renderRightView={() => <Text style = {styles.rowRight}>Delete</Text>}
+                          onSwipedRight={() => this.markResolvedNotResolved(item.id, isCompleted)}
+                          onSwipedLeft={() => this.props.deleteTodo(item.id)}
+                          renderRightView={() => <Text style={styles.rowRight}>Delete</Text>}
         />
     };
 
-    render() {
-        const rightButtonConfig = {
-            title: 'Count of todos : '+ this.props.count.toString(),
-            disabled: true,
-            tintColor: '#BC5EC5',
-        };
+    markResolvedNotResolved = (id, completed) => {
+        completed ? this.props.markUnresolved(id) : this.props.markResolved(id);
+    };
 
+    render() {
         const titleConfig = {
             title: 'One more todo app',
             style: styles.headerTitle
@@ -50,21 +57,43 @@ export default class TodoList extends Component {
 
         return (
             <View style={styles.container}>
-                    <NavigationBar title={titleConfig}
-                                   rightButton={rightButtonConfig}
-                    />
+                <NavigationBar title={titleConfig}
+                               leftButton={this.iconBtnConfig()}
+                               rightButton={this.rghBtnConf()}
+                />
 
-                    <FlatList data={this.props.todos}
-                              keyExtractor={this._keyExtractor}
-                              style={styles.flatList}
-                              enableEmptySections={true}
-                              renderItem={({item, index}) => this.scrollView(item,index)}/>
-                <View style = {styles.btnAdd}>
-                    <Button onPress={() => this.handleAddTodo()} title = 'add todo'/>
+                <FlatList data={this.props.todos}
+                          keyExtractor={this._keyExtractor}
+                          style={styles.flatList}
+                          enableEmptySections={true}
+                          renderItem={({item, index}) => this.scrollView(item, index)}/>
+                <View style={styles.btnAdd}>
+                    <TouchableOpacity>
+                        <Icon name='plus' size={22} raised
+                              color={'#384ab4'}
+                              type='font-awesome'
+                              onPress={() => this.handleAddTodo()}/>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
     }
+
+    rghBtnConf = () => {
+        return <Badge value = {'Todos: ' + this.props.count}
+                      containerStyle = {{backgroundColor: 'violet', marginRight: 5, marginTop : 8}}
+        />
+    };
+
+    iconBtnConfig = () => {
+        return <Icon name='remove'
+                     raised
+                     color={'#384ab4'}
+                     size={17}
+                     type='font-awesome'
+                     onPress={() => this.props.removeAll()}
+        />
+    };
 
     handleAddTodo = () => {
         this.setState({i: this.state.i + 1});
@@ -99,9 +128,16 @@ const styles = StyleSheet.create({
         height: 44,
         color: '#841584',
     },
+    itemCrossedOut: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        color: '#841584',
+        textDecorationLine: 'line-through'
+    },
     btnAdd: {
         position: 'absolute',
-        top: Dimensions.get('window').height * 0.95,
+        top: Dimensions.get('window').height * 0.93,
         left: 0,
         right: 0,
         bottom: 0,

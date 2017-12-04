@@ -2,3 +2,4 @@ export const ADD_TODO = 'ADD_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 export const MARK_RESOLVED = 'MARK_RESOLVED';
 export const MARK_UNRESOLVED = 'MARK_UNRESOLVED';
+export const REMOVE_ALL = 'REMOVE_ALL';

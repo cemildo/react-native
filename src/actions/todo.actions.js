@@ -1,5 +1,5 @@
 import {
-    ADD_TODO, REMOVE_TODO, MARK_RESOLVED, MARK_UNRESOLVED, SWITCH_MODAL, PASS_TODO,
+    ADD_TODO, REMOVE_TODO, MARK_RESOLVED, MARK_UNRESOLVED, SWITCH_MODAL, PASS_TODO, REMOVE_ALL,
 } from '../constants/todo.constants';
 
 export function addTodo(todo) {
@@ -34,6 +34,13 @@ export function markUnresolved(id) {
         dispatch({
             type: MARK_UNRESOLVED,
             payload:id
+        })
+    }
+}
+export function removeAll() {
+    return (dispatch) => {
+        dispatch({
+            type: REMOVE_ALL,
         })
     }
 }
