@@ -1,20 +1,11 @@
 import {
-    ADD_TODO, MARK_RESOLVED, MARK_UNRESOLVED, REMOVE_ALL, REMOVE_TODO,
+    ADD_TODO, FETCHING_TODOS, MARK_RESOLVED, MARK_UNRESOLVED, REMOVE_ALL, REMOVE_TODO, TODOS_FETCHED,
 } from "../constants/todo.constants";
 
 const INIT_STATE = {
-    todos: [
-        {
-            id: 0,
-            text: 'hardcode todo id 0',
-            completed: false
-        }
-    ],
+    todos: [],
     count: 0,
-    todoModal: {
-        text : 'Inccorect text',
-        completed: false
-    }
+    fetchingTodo: false,
 };
 
 export const todos = (state = INIT_STATE, action) => {
@@ -34,16 +25,20 @@ export const todos = (state = INIT_STATE, action) => {
                     {...todo, completed: true} : todo)
             }
         }
-
         case MARK_UNRESOLVED: {
             return {
                 ...state, todos: state.todos.map(todo => todo.id === action.payload ?
                     {...todo, completed: false} : todo)
             }
         }
-
         case REMOVE_ALL : {
             return {...state, todos : [], count : 0}
+        }
+        case FETCHING_TODOS : {
+            return {...state, fetchingTodo:true}
+        }
+        case TODOS_FETCHED : {
+            return {...state, todos : action.payload, count: action.payload.length, fetchingTodo: false}
         }
 
         default :

@@ -1,6 +1,8 @@
 import {
-    ADD_TODO, REMOVE_TODO, MARK_RESOLVED, MARK_UNRESOLVED, SWITCH_MODAL, PASS_TODO, REMOVE_ALL,
+    ADD_TODO, REMOVE_TODO, MARK_RESOLVED, MARK_UNRESOLVED, SWITCH_MODAL, PASS_TODO, REMOVE_ALL, FETCHING_TODOS,
 } from '../constants/todo.constants';
+import axios from 'axios';
+import {URL} from "../envieronment/configs";
 
 export function addTodo(todo) {
     return (dispatch) => {
@@ -42,5 +44,13 @@ export function removeAll() {
         dispatch({
             type: REMOVE_ALL,
         })
+    }
+}
+
+export function fetchTodo() {
+    return (dispatch) => {
+        dispatch({
+            type: FETCHING_TODOS,
+        });
     }
 }
