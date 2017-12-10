@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import {addTodo, fetchTodo, markResolved, markUnresolved, removeAll, removeTodo} from "../actions/todo.actions";
 import NavigationBar from "react-native-navbar";
 import SwipeView from "react-native-swipeview/lib/index";
-import {Badge, Icon} from 'react-native-elements';
+import {Badge, FormInput, Icon} from 'react-native-elements';
+import Modal from 'react-native-modalbox';
 
 @connect(store => ({
         todos: store.todos.todos,
@@ -23,6 +24,13 @@ import {Badge, Icon} from 'react-native-elements';
 export default class TodoList extends Component {
 
     _keyExtractor = (item, index) => index;
+
+
+    constructor(props) {
+        super(props);
+
+        this.state = {}
+    }
 
     scrollView = (item, index) => {
         let isCompleted = item.completed;
@@ -70,7 +78,7 @@ export default class TodoList extends Component {
                         <Icon name='plus' size={22} raised
                               color={'#384ab4'}
                               type='font-awesome'
-                              onPress={() => this.handleAddTodo()}/>
+                              onPress={() => this.refs.modal.open()}/>
                     </View> :
                     <View style={styles.btnAdd}>
                         <Icon name='refresh' size={22} raised
@@ -79,6 +87,17 @@ export default class TodoList extends Component {
                               onPress={() => this.props.fetchTodo()}/>
                     </View>
                 }
+
+                <Modal style={styles.modal} position={"center"} ref={"modal"} isDisabled={false}>
+                    <FormInput
+                        containerStyle={{width: 250, height: 40, paddingTop: 15}}
+                        placeholder="Type here to add new todo!"
+                        onChangeText={(text) => this.setState({text})}/>
+                    <Icon name='plus' size={18} raised
+                          color={'#384ab4'}
+                          type='font-awesome'
+                          onPress={() => this.handleAddTodo()}/>
+                </Modal>
             </View>
         )
     }
@@ -108,11 +127,8 @@ export default class TodoList extends Component {
     };
 
     handleAddTodo = () => {
-        let todo = {
-            text: 'hardcode todo id ',
-            completed: false
-        };
-        this.props.hadnleAddTodoClick(todo);
+        this.props.hadnleAddTodoClick({text: this.state.text, completed: false});
+        this.refs.modal.close();
     }
 }
 
@@ -180,5 +196,11 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: '#FE4D33'
+    },
+    modal: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 300,
+        width: 300,
     },
 });

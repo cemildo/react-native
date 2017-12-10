@@ -1,6 +1,12 @@
 import {
-    ADD_TODO, REMOVE_TODO, MARK_RESOLVED, MARK_UNRESOLVED, REMOVE_ALL, FETCHING_TODOS,
-    TODOS_FETCHED, FETCH_ERROR,
+    ADD_TODO,
+    FETCH_ERROR,
+    FETCHING_TODOS,
+    MARK_RESOLVED,
+    MARK_UNRESOLVED,
+    REMOVE_ALL,
+    REMOVE_TODO,
+    TODOS_FETCHED,
 } from '../constants/todo.constants';
 import axios from 'axios';
 import {URL} from "../envieronment/configs";
