@@ -5,3 +5,4 @@ export const MARK_UNRESOLVED = 'MARK_UNRESOLVED';
 export const REMOVE_ALL = 'REMOVE_ALL';
 export const FETCHING_TODOS = 'FETCHING_TODOS';
 export const TODOS_FETCHED = 'TODOS_FETCHED';
+export const FETCH_ERROR = 'FETCH_ERROR';
