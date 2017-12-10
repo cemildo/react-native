@@ -7,6 +7,7 @@ import {URL} from "../envieronment/configs";
 
 const headers = {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
 };
 
 export function addTodo(todo) {

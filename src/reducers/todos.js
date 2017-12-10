@@ -12,21 +12,21 @@ const INIT_STATE = {
 export const todos = (state = INIT_STATE, action) => {
     switch (action.type) {
         case ADD_TODO: {
-            return  {...state, todos: [...state.todos, action.payload], count: action.payload.length};
+            return  {...state, todos: action.payload, count: action.payload.length};
         }
         case REMOVE_TODO: {
             return {
-                ...state, todos: [...state.todos,action.payload], count: action.payload.length
+                ...state, todos: action.payload, count: action.payload.length
             }
         }
         case MARK_RESOLVED: {
             return {
-                ...state, todos: [...state.todos, action.payload]
+                ...state, todos: action.payload
             }
         }
         case MARK_UNRESOLVED: {
             return {
-                ...state, todos: [...state.todos, action.payload]
+                ...state, todos: action.payload
             }
         }
         case REMOVE_ALL : {
