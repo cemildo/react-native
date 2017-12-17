@@ -82,9 +82,16 @@ export function markUnresolved(id) {
 
 export function removeAll() {
     return (dispatch) => {
-        dispatch({
-            type: REMOVE_ALL,
-        })
+        axios.post(URL + `/todos/removeAll`, null, {headers: headers}).then(response => {
+            dispatch({
+                type: REMOVE_ALL,
+            })
+        }).catch(error => {
+            dispatch({
+                type: FETCH_ERROR,
+                payload: error
+            })
+        });
     }
 }
 
