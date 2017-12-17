@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {addTodo, fetchTodo, markResolved, markUnresolved, removeAll, removeTodo} from "../actions/todo.actions";
 import NavigationBar from "react-native-navbar";
 import SwipeView from "react-native-swipeview/lib/index";
-import {Badge, FormInput, Icon} from 'react-native-elements';
+import {Badge, FormInput, FormLabel, Icon} from 'react-native-elements';
 import Modal from 'react-native-modalbox';
 
 @connect(store => ({
@@ -89,8 +89,10 @@ export default class TodoList extends Component {
                 }
 
                 <Modal style={styles.modal} position={"center"} ref={"modal"} isDisabled={false}>
+                    <FormLabel labelStyle={{fontSize: 15}}>What do you want to do?</FormLabel>
                     <FormInput
-                        containerStyle={{width: 250, height: 40, paddingTop: 15}}
+                        inputStyle={{fontSize:20}}
+                        containerStyle={{width: 270, height: 40}}
                         placeholder="Type here to add new todo!"
                         onChangeText={(text) => this.setState({text})}/>
                     <Icon name='plus' size={18} raised
@@ -111,7 +113,7 @@ export default class TodoList extends Component {
     }
 
     rghBtnConf = () => {
-        return <Badge value={'Todos: ' + this.props.count}
+        return <Badge value={'Todos : ' + this.props.count}
                       containerStyle={{backgroundColor: 'violet', marginRight: 5, marginTop: 8}}
         />
     };
@@ -198,9 +200,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FE4D33'
     },
     modal: {
-        justifyContent: 'center',
         alignItems: 'center',
-        height: 300,
+        height: 100,
         width: 300,
     },
 });
