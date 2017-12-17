@@ -34,7 +34,7 @@ export function addTodo(todo) {
 
 export function removeTodo(id) {
     return (dispatch) => {
-        axios.post(URL + `/todos/delete/${id}`, null, {headers: headers}).then(response => {
+        axios.post(URL + `/todos/remove/${id}`, null, {headers: headers}).then(response => {
             dispatch({
                 type: REMOVE_TODO,
                 payload: response.data
