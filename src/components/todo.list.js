@@ -6,6 +6,7 @@ import NavigationBar from "react-native-navbar";
 import SwipeView from "react-native-swipeview/lib/index";
 import {Badge, FormInput, FormLabel, Icon} from 'react-native-elements';
 import Modal from 'react-native-modalbox';
+import ActionButton from 'react-native-action-button';
 
 @connect(store => ({
         todos: store.todos.todos,
@@ -25,10 +26,8 @@ export default class TodoList extends Component {
 
     _keyExtractor = (item, index) => index;
 
-
     constructor(props) {
         super(props);
-
         this.state = {}
     }
 
@@ -74,19 +73,22 @@ export default class TodoList extends Component {
                           style={styles.flatList}
                           enableEmptySections={true}
                           renderItem={({item, index}) => this.scrollView(item, index)}/>
-                {this.props.count !== 0 ? <View style={styles.btnAdd}>
-                        <Icon name='plus' size={22} raised
-                              color={'#384ab4'}
-                              type='font-awesome'
-                              onPress={() => this.refs.modal.open()}/>
-                    </View> :
-                    <View style={styles.btnAdd}>
+
+                <ActionButton buttonColor="rgba(231,76,60,1)" position='center'>
+                        <ActionButton.Item buttonColor='rgba(30,136,229 ,1)' title="New todo"
+                                           onPress={() => this.refs.modal.open()}>
+                            <Icon name='paw' size={22} raised
+                                  color={'#384ab4'}
+                                  type='font-awesome'
+                                  onPress={() => this.refs.modal.open()}/>
+                        </ActionButton.Item>
+                    <ActionButton.Item buttonColor='rgba(30,136,229 ,1)' title="Refresh"
+                                       onPress={() => this.props.fetchTodo()}>
                         <Icon name='refresh' size={22} raised
                               color={'#384ab4'}
-                              type='font-awesome'
-                              onPress={() => this.props.fetchTodo()}/>
-                    </View>
-                }
+                              type='font-awesome'/>
+                    </ActionButton.Item>
+                </ActionButton>
 
                 <Modal style={styles.modal} position={"center"} ref={"modal"} isDisabled={false}>
                     <FormLabel labelStyle={{fontSize: 15}}>What do you want to do?</FormLabel>
@@ -109,7 +111,7 @@ export default class TodoList extends Component {
     };
 
     shouldComponentUpdate(nextProp) {
-        return this.props.count !== nextProp.count;
+        return this.props.count !== nextProp.count || this.props.todos !== nextProp.todos;
     }
 
     rghBtnConf = () => {
