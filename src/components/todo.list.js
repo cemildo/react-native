@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {connect} from 'react-redux';
 import {addTodo, fetchTodo, markResolved, markUnresolved, removeAll, removeTodo} from "../actions/todo.actions";
 import NavigationBar from "react-native-navbar";
@@ -62,19 +62,21 @@ export default class TodoList extends Component {
         };
 
         return (
-            <View style={styles.container}>
-                <NavigationBar title={titleConfig}
-                               leftButton={this.iconBtnConfig()}
-                               rightButton={this.rghBtnConf()}
-                />
+            <Image source={require('../assets/background.png')} style={styles.backgroundImage}>
+                <View style={styles.container}>
+                    <NavigationBar title={titleConfig}
+                                   leftButton={this.iconBtnConfig()}
+                                   rightButton={this.rghBtnConf()}
+                                   tintColor={'transparent'}
+                    />
 
-                <FlatList data={this.props.todos}
-                          keyExtractor={this._keyExtractor}
-                          style={styles.flatList}
-                          enableEmptySections={true}
-                          renderItem={({item, index}) => this.scrollView(item, index)}/>
+                    <FlatList data={this.props.todos}
+                              keyExtractor={this._keyExtractor}
+                              style={styles.flatList}
+                              enableEmptySections={true}
+                              renderItem={({item, index}) => this.scrollView(item, index)}/>
 
-                <ActionButton buttonColor="rgba(231,76,60,1)" position='center'>
+                    <ActionButton buttonColor="rgba(231,76,60,1)" position='center'>
                         <ActionButton.Item buttonColor='rgba(30,136,229 ,1)' title="New todo"
                                            onPress={() => this.refs.modal.open()}>
                             <Icon name='paw' size={22} raised
@@ -82,27 +84,28 @@ export default class TodoList extends Component {
                                   type='font-awesome'
                                   onPress={() => this.refs.modal.open()}/>
                         </ActionButton.Item>
-                    <ActionButton.Item buttonColor='rgba(30,136,229 ,1)' title="Refresh"
-                                       onPress={() => this.props.fetchTodo()}>
-                        <Icon name='refresh' size={22} raised
-                              color={'#384ab4'}
-                              type='font-awesome'/>
-                    </ActionButton.Item>
-                </ActionButton>
+                        <ActionButton.Item buttonColor='rgba(30,136,229 ,1)' title="Refresh"
+                                           onPress={() => this.props.fetchTodo()}>
+                            <Icon name='refresh' size={22} raised
+                                  color={'#384ab4'}
+                                  type='font-awesome'/>
+                        </ActionButton.Item>
+                    </ActionButton>
 
-                <Modal style={styles.modal} position={"center"} ref={"modal"} isDisabled={false}>
-                    <FormLabel labelStyle={{fontSize: 15}}>What do you want to do?</FormLabel>
-                    <FormInput
-                        inputStyle={{fontSize:20}}
-                        containerStyle={{width: 270, height: 40}}
-                        placeholder="Type here to add new todo!"
-                        onChangeText={(text) => this.setState({text})}/>
-                    <Icon name='plus' size={18} raised
-                          color={'#384ab4'}
-                          type='font-awesome'
-                          onPress={() => this.handleAddTodo()}/>
-                </Modal>
-            </View>
+                    <Modal style={styles.modal} position={"center"} ref={"modal"} isDisabled={false}>
+                        <FormLabel labelStyle={{fontSize: 15}}>What do you want to do?</FormLabel>
+                        <FormInput
+                            inputStyle={{fontSize: 20}}
+                            containerStyle={{width: 270, height: 40}}
+                            placeholder="Type here to add new todo!"
+                            onChangeText={(text) => this.setState({text})}/>
+                        <Icon name='plus' size={18} raised
+                              color={'#384ab4'}
+                              type='font-awesome'
+                              onPress={() => this.handleAddTodo()}/>
+                    </Modal>
+                </View>
+            </Image>
         )
     }
 
@@ -142,11 +145,18 @@ const styles = StyleSheet.create({
 
     },
     headerTitle: {
-        fontSize: 20
+        fontSize: 20,
+        color:'#00ACC1'
     },
     noTODO: {
         flex: 1,
         justifyContent: 'center',
+    },
+    backgroundImage: {
+        flex: 1,
+        width: null,
+        height: null,
+        resizeMode: 'cover'
     },
     container: {
         flex: 1,
