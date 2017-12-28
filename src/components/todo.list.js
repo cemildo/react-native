@@ -166,14 +166,16 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 18,
         height: 44,
-        color: '#841584',
+        color: '#E0F7FA',
+        backgroundColor:'transparent'
     },
     itemCrossedOut: {
         padding: 10,
         fontSize: 18,
         height: 44,
-        color: '#841584',
-        textDecorationLine: 'line-through'
+        color: '#E0F7FA',
+        textDecorationLine: 'line-through',
+        backgroundColor:'transparent'
     },
     btnAdd: {
         position: 'absolute',
